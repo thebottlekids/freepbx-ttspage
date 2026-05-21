@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <rawname>ttspage</rawname>
+    <repo>standard</repo>
+    <name>TTS Page</name>
+    <version>1.0.0</version>
+    <publisher>Michael Knudsen</publisher>
+    <license>MIT</license>
+    <licenselink>http://opensource.org/licenses/mit-license.html</licenselink>
+    <type>tool</type>
+    <category>Admin</category>
+    <description>TTS Paging system using Piper</description>
+    <menuitems>
+        <ttspage>TTS Page</ttspage>
+    </menuitems>
+</module>
