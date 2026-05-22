@@ -1,9 +1,11 @@
-A FreePBX module that lets you broadcast text-to-speech messages to any extension on your system using Piper TTS. Type a message, pick a voice, select your extensions, and hit broadcast — that's it.
+# TTS Page - FreePBX Module
+
+A FreePBX module that lets you broadcast text-to-speech messages to any extension on your system using Piper TTS. Type a message, pick a voice, select your extensions, and hit broadcast.
 
 ## Features
 - Text-to-speech broadcasting using Piper TTS
 - Multiple US English voices to choose from
-- Dynamically pulls extensions from FreePBX — no hardcoding needed
+- Dynamically pulls extensions from FreePBX
 - Select All button for quick system-wide broadcasting
 - Built directly into the FreePBX Admin menu
 - Audio automatically converted to Asterisk-compatible format
@@ -11,12 +13,31 @@ A FreePBX module that lets you broadcast text-to-speech messages to any extensio
 ## Requirements
 - FreePBX 17
 - Debian 12
-- Piper TTS
-- Sox
 - PHP 8.2
 - PJSIP extensions
+- Internet connection (for install script)
 
-## Installation
+## Quick Install
+
+SSH into your FreePBX server and run:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/thebottlekids/freepbx-ttspage/main/install.sh | bash
+```
+
+That's it! The script will automatically install Piper TTS, download voice models, install Sox, set up the dialplan, and install the FreePBX module.
+
+## Usage
+1. Log into FreePBX
+2. Go to **Admin > TTS Page**
+3. Type your message
+4. Select a voice
+5. Check the extensions to broadcast to
+6. Click **📣 Broadcast**
+
+## Manual Installation
+
+If you prefer to install manually, follow these steps:
 
 ### 1. Install Piper TTS
 ```bash
@@ -70,28 +91,27 @@ fwconsole reload
 ```
 
 ### 6. Add Dialplan Context
-Add the following to `/etc/asterisk/extensions_custom.conf`:s,1,NoOp(Starting broadcast)
-exten => s,n,Set(PJSIP_HEADER(Alert-Info)=http://www.notused.com;info=alert-autoanswer;delay=0)
-exten => s,n,Set(PJSIP_HEADER(Call-Info)=http://www.notused.com;answer-after=0)
+Add the following to /etc/asterisk/extensions_custom.conf:
+
+[broadcast-announce]
+exten => s,1,NoOp(Starting broadcast)
+exten => s,n,Set(PJSIP_HEADER(Alert-Info)=<http://www.notused.com>;info=alert-autoanswer;delay=0)
+exten => s,n,Set(PJSIP_HEADER(Call-Info)=<http://www.notused.com>;answer-after=0)
 exten => s,n,Wait(2)
 exten => s,n,Playback(${AUDIO_FILE})
 exten => s,n,Hangup()
+
 Then reload:
 ```bash
 asterisk -rx "dialplan reload"
 ```
 
-## Usage
-1. Log into FreePBX
-2. Go to **Admin > TTS Page**
-3. Type your message in the text box
-4. Select a voice from the dropdown
-5. Check the extensions you want to broadcast to
-6. Click **📣 Broadcast**
-
-The system will generate the audio using Piper TTS, convert it to the correct format, and call each selected extension playing the message.
+## Notes
+- Uses PJSIP channels
+- Audio is converted to 8kHz mono 16-bit WAV for Asterisk compatibility
+- Temporary audio files are stored in /var/lib/asterisk/sounds/
+- Auto answer support varies by phone model
 
 ## Author
 Michael Knudsen
 https://github.com/thebottlekids
-EOF
