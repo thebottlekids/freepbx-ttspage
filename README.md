@@ -15,17 +15,22 @@ A FreePBX module that lets you broadcast text-to-speech messages to any extensio
 - Debian 12
 - PHP 8.2
 - PJSIP extensions
-- Internet connection (for install script)
+- Internet connection
 
 ## Quick Install
 
-SSH into your FreePBX server and run:
+SSH into your FreePBX server as root and run:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/thebottlekids/freepbx-ttspage/main/install.sh | bash
+wget -O install.sh https://raw.githubusercontent.com/thebottlekids/freepbx-ttspage/main/install.sh && bash install.sh
 ```
 
-That's it! The script will automatically install Piper TTS, download voice models, install Sox, set up the dialplan, and install the FreePBX module.
+That's it! The script will automatically:
+- Install Piper TTS
+- Download all voice models
+- Install Sox
+- Set up the Asterisk dialplan
+- Install the FreePBX module
 
 ## Usage
 1. Log into FreePBX
